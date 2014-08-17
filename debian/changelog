@@ -1,0 +1,36 @@
+refind (0.8.3-0ppa1) trusty; urgency=medium
+
+  * Version bump
+
+ -- Rod Smith <rodsmith@vbu1404>  Sun, 06 Jul 2014 12:28:56 -0400
+
+refind (0.8.2-0ppa3) trusty; urgency=medium
+
+  * Removed stray debugging code that caused pause during startup
+
+ -- Rod Smith <rodsmith@rodsbooks.com>  Sun, 08 Jun 2014 16:48:48 -0400
+
+refind (0.8.2-0ppa2) trusty; urgency=medium
+
+  * Version bump
+
+ -- Rod Smith <rodsmith@rodsbooks.com>  Sun, 08 Jun 2014 12:32:48 -0400
+
+refind (0.8.1-0ppa2) trusty; urgency=medium
+
+  * Revised Debian package to not use version numbers in /usr/share directory names
+
+ -- Rod Smith <rodsmith@louiswu.rodsbooks.com>  Fri, 16 May 2014 14:57:11 -0400
+
+refind (0.8.0-0ppa1) trusty; urgency=medium
+
+  * Updated for version 0.8.0
+
+ -- Rod Smith <rod.smith@canonical.com>  Fri, 16 May 2014 09:01:45 -0400
+
+refind (0.7.8-0ppa1) trusty; urgency=low
+
+  [ Roderick W. Smith ]
+  * Initial release. (Closes: #1136112)
+
+ -- Rod Smith <rod.smith@canonical.com>  Sun, 9 Mar 2014 07:59:50 -0500

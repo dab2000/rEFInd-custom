@@ -1,0 +1,54 @@
+#
+# refind/Make.tiano
+# Build control file for rEFInd, using TianoCore EDK2
+# Requires that EfiLib, mok, and libeg subdirectories be built before this
+# file is used.
+#
+
+include ../Make.tiano
+
+EFILIB          = $(EDK2BASE)/Build/Mde/$(TARGET)_$(TOOL_CHAIN_TAG)/$(UC_ARCH)/MdePkg/Library
+ALL_EFILIBS     = $(EFILIB)/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib/OUTPUT/BaseDebugPrintErrorLevelLib.lib \
+                  $(EFILIB)/BasePrintLib/BasePrintLib/OUTPUT/BasePrintLib.lib \
+                  $(EFILIB)/BasePcdLibNull/BasePcdLibNull/OUTPUT/BasePcdLibNull.lib \
+                  $(EFILIB)/UefiDebugLibStdErr/UefiDebugLibStdErr/OUTPUT/UefiDebugLibStdErr.lib \
+                  $(EFILIB)/BaseLib/BaseLib/OUTPUT/BaseLib.lib \
+                  $(EFILIB)/BaseMemoryLib/BaseMemoryLib/OUTPUT/BaseMemoryLib.lib \
+                  $(EFILIB)/UefiBootServicesTableLib/UefiBootServicesTableLib/OUTPUT/UefiBootServicesTableLib.lib \
+                  $(EFILIB)/UefiMemoryAllocationLib/UefiMemoryAllocationLib/OUTPUT/UefiMemoryAllocationLib.lib \
+                  $(EFILIB)/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib/OUTPUT/UefiRuntimeServicesTableLib.lib \
+                  $(EFILIB)/UefiDevicePathLib/UefiDevicePathLib/OUTPUT/UefiDevicePathLib.lib \
+                  $(EFILIB)/UefiLib/UefiLib/OUTPUT/UefiLib.lib \
+                  $(EFILIB)/BasePeCoffExtraActionLibNull/BasePeCoffExtraActionLibNull/OUTPUT/PeCoffExtraActionLibNull.lib \
+                  $(EFILIB)/UefiApplicationEntryPoint/UefiApplicationEntryPoint/OUTPUT/UefiApplicationEntryPoint.lib \
+                  $(EFILIB)/DxeServicesLib/DxeServicesLib/OUTPUT/DxeServicesLib.lib \
+                  $(EFILIB)/DxeServicesTableLib/DxeServicesTableLib/OUTPUT/DxeServicesTableLib.lib \
+                  $(EFILIB)/DxeHobLib/DxeHobLib/OUTPUT/DxeHobLib.lib \
+                  $(EFILIB)/BaseIoLibIntrinsic/BaseIoLibIntrinsic/OUTPUT/BaseIoLibIntrinsic.lib \
+                  $(EFILIB)/BasePeCoffLib/BasePeCoffLib/OUTPUT/BasePeCoffLib.lib
+#		  $(EFILIB)/BasePerformanceLibNull/BasePerformanceLibNull/OUTPUT/BasePerformanceLibNull.lib \
+#		  /usr/local/UDK2010/MyWorkSpace/Build/Mde/RELEASE_GCC46/X64/MdePkg/Library/SecPeiDxeTimerLibCpu/SecPeiDxeTimerLibCpu/OUTPUT/SecPeiDxeTimerLibCpu.lib \
+#		  /usr/local/UDK2010/MyWorkSpace/Build/MdeModule/RELEASE_GCC46/X64/MdeModulePkg/Core/Dxe/DxeMain/OUTPUT/DxeCore.lib \
+#		  /usr/local/UDK2010/MyWorkSpace/Build/Mde/RELEASE_GCC46/X64/MdePkg/Library/BaseCacheMaintenanceLib/BaseCacheMaintenanceLib/OUTPUT/BaseCacheMaintenanceLib.lib \
+#		  /usr/local/UDK2010/MyWorkSpace/Build/Mde/RELEASE_GCC46/X64/MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull/OUTPUT/BasePerformanceLibNull.lib
+#                  $(EFILIB)/../../MdeModulePkg/Core/Dxe/DxeMain/OUTPUT/DxeCore.lib
+#		  /usr/local/UDK2010/MyWorkSpace/Build/MdeModule/RELEASE_GCC46/X64/MdeModulePkg/Core/Dxe/DxeMain/OUTPUT/DxeMain/DxeMain.obj
+
+
+SOURCE_NAMES     = config driver_support icns lib main menu screen gpt crc32 AutoGen
+OBJS             = $(SOURCE_NAMES:=.obj)
+
+all: $(BUILDME)
+
+$(AR_TARGET): $(OBJS)
+	$(AR) -cr $(AR_TARGET).lib $(OBJS)
+
+$(DLL_TARGET)_$(FILENAME_CODE).dll: $(OBJS) ../libeg/libeg.lib ../EfiLib/EfiLib.lib ../mok/mok.lib
+	$(LD) -o $(DLL_TARGET)_$(FILENAME_CODE).dll $(LDFLAGS) --start-group $(ALL_EFILIBS) $(OBJS) ../libeg/libeg.lib ../EfiLib/EfiLib.lib ../mok/mok.lib --end-group
+
+$(BUILDME): $(DLL_TARGET)_$(FILENAME_CODE).dll
+	$(OBJCOPY) --strip-unneeded -R .eh_frame $(DLL_TARGET)_$(FILENAME_CODE).dll
+	$(GENFW) -e UEFI_APPLICATION -o $(BUILDME)_$(FILENAME_CODE).efi $(DLL_TARGET)_$(FILENAME_CODE).dll
+
+clean:
+	make clean
