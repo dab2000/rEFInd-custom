@@ -445,6 +445,7 @@ VOID ReadConfig(CHAR16 *FileName)
     // Set a few defaults only if we're loading the default file.
     if (StriCmp(FileName, GlobalConfig.ConfigFilename) == 0) {
        MyFreePool(GlobalConfig.AlsoScan);
+       GlobalConfig.OffsetTopY = 0;
        GlobalConfig.AlsoScan = StrDuplicate(ALSO_SCAN_DIRS);
        MyFreePool(GlobalConfig.DontScanDirs);
        if (SelfVolume) {
@@ -487,8 +488,12 @@ VOID ReadConfig(CHAR16 *FileName)
         TokenCount = ReadTokenLine(&File, &TokenList);
         if (TokenCount == 0)
             break;
-
-        if (StriCmp(TokenList[0], L"timeout") == 0) {
+//add new config property 'offset_top_y'
+//setup region from 0 to offset_top_y restricted for paint and clear
+        if (StriCmp(TokenList[0], L"offset_top_y") == 0) {
+            HandleInt(TokenList, TokenCount,&(GlobalConfig.OffsetTopY));
+//add
+        } else if (StriCmp(TokenList[0], L"timeout") == 0) {
             HandleInt(TokenList, TokenCount, &(GlobalConfig.Timeout));
 
         } else if (StriCmp(TokenList[0], L"hideui") == 0) {
@@ -604,7 +609,7 @@ VOID ReadConfig(CHAR16 *FileName)
 
         } else if ((StriCmp(TokenList[0], L"small_icon_size") == 0) && (TokenCount == 2)) {
            HandleInt(TokenList, TokenCount, &i);
-           if (i >= 32)
+           if (i >= 10) //change 32 to 10 for smaller small icon
               GlobalConfig.IconSizes[ICON_SIZE_SMALL] = i;
 
         } else if ((StriCmp(TokenList[0], L"big_icon_size") == 0) && (TokenCount == 2)) {

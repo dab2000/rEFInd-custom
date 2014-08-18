@@ -348,9 +348,9 @@ VOID egClearScreen(IN EG_PIXEL *Color)
         // layout, and the header from TianoCore actually defines them
         // to be the same type.
         refit_call10_wrapper(GraphicsOutput->Blt, GraphicsOutput, (EFI_GRAPHICS_OUTPUT_BLT_PIXEL *)&FillColor, EfiBltVideoFill,
-                             0, 0, 0, 0, egScreenWidth, egScreenHeight, 0);
+                             0, 0, 0, GlobalConfig.OffsetTopY, egScreenWidth, egScreenHeight, 0);//clear only region from OffsetTopY to egScreenHeight
     } else if (UgaDraw != NULL) {
-        refit_call10_wrapper(UgaDraw->Blt, UgaDraw, &FillColor, EfiUgaVideoFill, 0, 0, 0, 0, egScreenWidth, egScreenHeight, 0);
+        refit_call10_wrapper(UgaDraw->Blt, UgaDraw, &FillColor, EfiUgaVideoFill, 0, 0, 0, GlobalConfig.OffsetTopY, egScreenWidth, egScreenHeight, 0);//clear only region from OffsetTopY to egScreenHeight
     }
 }
 

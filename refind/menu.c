@@ -1031,7 +1031,8 @@ static VOID PaintIcon(IN EG_EMBEDDED_IMAGE *BuiltInIcon, IN CHAR16 *ExternalFile
 } // static VOID ()
 
 inline UINTN ComputeRow0PosY(VOID) {
-   return ((UGAHeight / 2) - TileSizes[0] / 2);
+   return GlobalConfig.OffsetTopY;
+//((UGAHeight / 2) - TileSizes[0] / 2);
 } // UINTN ComputeRow0PosY()
 
 // Display (or erase) the arrow icons to the left and right of an icon's row,
