@@ -472,6 +472,7 @@ VOID ReadConfig(CHAR16 *FileName)
        Status = EfivarGetRaw(&RefindGuid, L"PreviousBoot", (CHAR8**) &(GlobalConfig.DefaultSelection), &i);
        if (Status != EFI_SUCCESS)
           GlobalConfig.DefaultSelection = NULL;
+       GlobalConfig.MenuRowPosY = 0;
     } // if
 
     if (!FileExists(SelfDir, FileName)) {
@@ -668,6 +669,9 @@ VOID ReadConfig(CHAR16 *FileName)
 
         } else if (StriCmp(TokenList[0], L"max_tags") == 0) {
            HandleInt(TokenList, TokenCount, &(GlobalConfig.MaxTags));
+
+        } else if (StriCmp(TokenList[0], L"menu_row_pos_y") == 0) {
+           HandleInt(TokenList, TokenCount, &(GlobalConfig.MenuRowPosY));
 
         } else if ((StriCmp(TokenList[0], L"include") == 0) && (TokenCount == 2) &&
                    (StriCmp(FileName, GlobalConfig.ConfigFilename) == 0)) {

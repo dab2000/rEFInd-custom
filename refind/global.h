@@ -274,6 +274,7 @@ typedef struct {
    CHAR16      *IconsDir;
    UINTN       ShowTools[NUM_TOOLS];
    CHAR8       ScanFor[NUM_SCAN_OPTIONS]; // codes of types of loaders for which to scan
+   UINTN       MenuRowPosY;
 } REFIT_CONFIG;
 
 // Global variables
