@@ -472,7 +472,6 @@ VOID ReadConfig(CHAR16 *FileName)
        Status = EfivarGetRaw(&RefindGuid, L"PreviousBoot", (CHAR8**) &(GlobalConfig.DefaultSelection), &i);
        if (Status != EFI_SUCCESS)
           GlobalConfig.DefaultSelection = NULL;
-       GlobalConfig.MenuRowPosY = 0;
     } // if
 
     if (!FileExists(SelfDir, FileName)) {

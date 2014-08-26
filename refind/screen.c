@@ -168,6 +168,11 @@ VOID SetupScreen(VOID)
         // clear screen and show banner
         // (now we know we'll stay in graphics mode)
         SwitchToGraphics();
+
+        if (GlobalConfig.SavedScreen == NULL) {
+           GlobalConfig.SavedScreen = egCropImage(egCopyScreen(), 0, 0, UGAWidth, GlobalConfig.MenuRowPosY);
+        }
+
         if (GlobalConfig.ScreensaverTime != -1) {
            BltClearScreen(TRUE);
         } else { // start with screen blanked
@@ -484,6 +489,10 @@ VOID BltClearScreen(BOOLEAN ShowBanner)
     } else { // not showing banner
         // clear to menu background color
         egClearScreen(&MenuBackgroundPixel);
+	if (GlobalConfig.SavedScreen != NULL) {
+           BltImage(GlobalConfig.SavedScreen, 0, 0);
+        }
+
     }
 
     GraphicsScreenDirty = FALSE;
