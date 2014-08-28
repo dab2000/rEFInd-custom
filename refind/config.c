@@ -672,6 +672,11 @@ VOID ReadConfig(CHAR16 *FileName)
         } else if (StriCmp(TokenList[0], L"menu_row_pos_y") == 0) {
            HandleInt(TokenList, TokenCount, &(GlobalConfig.MenuRowPosY));
 
+        } else if ((StriCmp(TokenList[0], L"background_color_rgb") == 0) && (TokenCount == 4)) {
+           MenuBackgroundPixel.r = Atoi(TokenList[1]);
+           MenuBackgroundPixel.g = Atoi(TokenList[2]);
+           MenuBackgroundPixel.b = Atoi(TokenList[3]); 
+
         } else if ((StriCmp(TokenList[0], L"include") == 0) && (TokenCount == 2) &&
                    (StriCmp(FileName, GlobalConfig.ConfigFilename) == 0)) {
            if (StriCmp(TokenList[1], FileName) != 0) {
